@@ -9,8 +9,6 @@ class Source(
     var language: String?,
     var country: String?
 ) {
-
-
     //Надо???
     private val additionalProperties = HashMap<String, Any>()
 
