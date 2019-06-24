@@ -1,9 +1,10 @@
-package ru.kpfu.itis.android.news
+package ru.kpfu.itis.android.news.ui
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import ru.kpfu.itis.android.news.R
 
 class MainActivity : AppCompatActivity() {
 
