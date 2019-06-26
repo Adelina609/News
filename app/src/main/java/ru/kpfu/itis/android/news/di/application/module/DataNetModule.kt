@@ -7,6 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.kpfu.itis.android.news.data.network.NewsApi
+import ru.kpfu.itis.android.news.data.network.interceptor.ApiKeyInterceptor
 import ru.kpfu.itis.android.news.di.application.scope.ApplicationScope
 
 @Module
