@@ -79,8 +79,8 @@ dependencies {
     kapt "androidx.room:room-compiler:${room_version}"
     implementation "androidx.room:room-rxjava2:${room_version}"
     //navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:${nav_version}"
-    implementation "android.arch.navigation:navigation-ui-ktx:${nav_version}"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0-rc02'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.0.0-rc02'
     //design
     implementation "com.google.android.material:material:${design}"
     //Picasso

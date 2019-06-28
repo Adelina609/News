@@ -6,7 +6,7 @@
                                                    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_questions"
+            android:id="@+id/rv_sources"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
@@ -18,7 +18,7 @@
             tools:listitem="@layout/item_source" />
 
     <ProgressBar
-            android:id="@+id/main_progressBar"
+            android:id="@+id/progressBar_fr_sources"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

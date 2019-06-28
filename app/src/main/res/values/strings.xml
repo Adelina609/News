@@ -8,4 +8,8 @@
     <string name="name">Name</string>
     <string name="title">Title</string>
     <string name="news_image">news image</string>
+    <string name="img_description">Image</string>
+    <string name="server_load_error">Can\'t load news</string>
+    <string name="server_load_success">News loaded</string>
+    <string name="transaction_img_news">TRANSACTION_IMG_NEWS</string>
 </resources>

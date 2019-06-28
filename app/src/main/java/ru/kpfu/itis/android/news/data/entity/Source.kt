@@ -1,6 +1,6 @@
 package ru.kpfu.itis.android.news.data.entity
 
-class Source(
+data class Source(
     var id: String,
     var name: String,
     var description: String,
@@ -9,9 +9,6 @@ class Source(
     var language: String?,
     var country: String?
 ) {
-    //Надо???
-    private val additionalProperties = HashMap<String, Any>()
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

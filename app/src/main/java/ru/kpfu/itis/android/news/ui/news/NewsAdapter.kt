@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_news.view.*
 import ru.kpfu.itis.android.news.R
-import ru.kpfu.itis.android.news.data.entity.Article
+import ru.kpfu.itis.android.news.data.entity.News
 
-class NewsAdapter(private val news: List<Article>) :
-    ListAdapter<Article, NewsAdapter.NewsHolder>(NewsDiffCallback()) {
+class NewsAdapter(private val news: List<News>) :
+    ListAdapter<News, NewsAdapter.NewsHolder>(NewsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsAdapter.NewsHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
@@ -23,10 +23,10 @@ class NewsAdapter(private val news: List<Article>) :
         holder.bind(news[position].title, news[position].description)
     }
 
-    class NewsDiffCallback : DiffUtil.ItemCallback<Article>() {
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean = oldItem.title == newItem.title
+    class NewsDiffCallback : DiffUtil.ItemCallback<News>() {
+        override fun areItemsTheSame(oldItem: News, newItem: News): Boolean = oldItem.title == newItem.title
 
-        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean = oldItem == newItem
+        override fun areContentsTheSame(oldItem: News, newItem: News): Boolean = oldItem == newItem
 
     }
 

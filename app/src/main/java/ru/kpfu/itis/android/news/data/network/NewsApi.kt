@@ -4,8 +4,9 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import ru.kpfu.itis.android.news.data.entity.Source
-import ru.kpfu.itis.android.news.data.network.model.ArticleWrapper
+import ru.kpfu.itis.android.news.data.network.model.NewsWrapper
 import ru.kpfu.itis.android.news.data.network.model.SourceWrapper
+import java.sql.Struct
 
 interface NewsApi {
 
@@ -13,6 +14,6 @@ interface NewsApi {
     fun loadSources(): Single<SourceWrapper>
 
     @GET("top-headlines?sources={source}")
-    fun loadArticles(@Path("source") source: Source) : Single<ArticleWrapper>
+    fun loadNews(@Path("source") source: String) : Single<NewsWrapper>
 
 }

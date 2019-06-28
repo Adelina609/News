@@ -12,8 +12,8 @@ import ru.kpfu.itis.android.news.R
 import ru.kpfu.itis.android.news.data.entity.Source
 
 class SourceAdapter(
-    private val sources: List<Source>,
-    private val sourceLambda: (String) -> Unit
+    private val sources: List<Source>
+   // private val sourceLambda: (String) -> Unit
 ) :
     ListAdapter<Source, SourceAdapter.SourceHolder>(SourceDiffCallback()) {
 
@@ -27,7 +27,7 @@ class SourceAdapter(
         holder.bind(sources[position].name, sources[position].description)
         val id = sources[position].id
         holder.itemView.setOnClickListener {
-            sourceLambda.invoke(id)
+            //sourceLambda.invoke(id)
         }
     }
 

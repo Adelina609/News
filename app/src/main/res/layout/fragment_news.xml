@@ -7,7 +7,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_questions"
+            android:id="@+id/rv_news_fr_news"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clipToPadding="false"
@@ -19,7 +19,7 @@
             tools:listitem="@layout/item_news" />
 
     <ProgressBar
-            android:id="@+id/main_progressBar"
+            android:id="@+id/progressBar_fr_news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
