@@ -8,6 +8,7 @@ import ru.kpfu.itis.android.news.data.mapper.mapNewsRemoteToNews
 import ru.kpfu.itis.android.news.data.network.NewsApi
 
 class NewsNetworkRepository constructor(private val newsApi: NewsApi) {
+
     fun getSources(): Single<List<Source>> = newsApi
         .loadSources()
         .map { it.sources }

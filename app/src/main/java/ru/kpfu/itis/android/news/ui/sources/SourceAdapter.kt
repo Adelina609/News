@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_source.view.*
 import ru.kpfu.itis.android.news.R
 import ru.kpfu.itis.android.news.data.entity.Source
 
 class SourceAdapter(
-    private val sources: List<Source>
-   // private val sourceLambda: (String) -> Unit
+    private val sourceLambda: (Source) -> Unit
 ) :
     ListAdapter<Source, SourceAdapter.SourceHolder>(SourceDiffCallback()) {
 
@@ -24,11 +24,7 @@ class SourceAdapter(
     }
 
     override fun onBindViewHolder(holder: SourceAdapter.SourceHolder, position: Int) {
-        holder.bind(sources[position].name, sources[position].description)
-        val id = sources[position].id
-        holder.itemView.setOnClickListener {
-            //sourceLambda.invoke(id)
-        }
+        holder.bind(getItem(position), sourceLambda)
     }
 
     class SourceDiffCallback : DiffUtil.ItemCallback<Source>() {
@@ -41,9 +37,13 @@ class SourceAdapter(
     class SourceHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
 
-        fun bind(sourceName: String, sourceDesc: String) {
-            containerView.tv_source_name.text = sourceName
-            containerView.tv_source_desc.text = sourceDesc
+        fun bind(source : Source, clickListener: (Source) -> Unit) {
+            with(containerView) {
+                containerView.tv_source_name.text = source.name
+                containerView.tv_source_desc.text = source.description
+                setOnClickListener { clickListener(source) }
+            }
+            //Picasso.get().load(source.urlToImage).into(iv_main_image)
         }
     }
 }

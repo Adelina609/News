@@ -1,8 +1,6 @@
 package ru.kpfu.itis.android.news.ui.sources
 
-import android.app.Application
 import android.os.Bundle
-import android.transition.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +17,7 @@ import ru.kpfu.itis.android.news.data.entity.Source
 import ru.kpfu.itis.android.news.di.screens.component.DaggerNewsComponent
 import ru.kpfu.itis.android.news.di.screens.module.NewsModule
 import ru.kpfu.itis.android.news.di.screens.module.ViewModelModule
+import ru.kpfu.itis.android.news.ui.news.NewsFragment
 import ru.kpfu.itis.android.news.utils.ViewModelFactory
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -31,7 +30,7 @@ class SourcesFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory<SourceViewModel>
 
     companion object {
-        const val KEY_NEWS_ID = "id_source"
+        const val KEY_SOURCE_ID = "id_source"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,14 +59,13 @@ class SourcesFragment : Fragment() {
 
     private fun observeNewsLiveData() {
         sourcesListViewModel.sourceLiveData.observe(this, Observer {
-            println("*******************************************"+it.get(0).description)
             (rv_sources.adapter as SourceAdapter).submitList(it)
         })
     }
 
     private fun initAdapter() {
         if (rv_sources.adapter == null) {
-            //rv_sources.adapter = SourceAdapter()
+            rv_sources.adapter = SourceAdapter(sourceClickListener)
             rv_sources.layoutManager = LinearLayoutManager(context)
             rv_sources.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
@@ -97,16 +95,15 @@ class SourcesFragment : Fragment() {
     private fun makeToast(text: String) =
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 
-//    private val sourceClickListener: (Source) -> Unit = {
-//        val args = Bundle()
-//        args.putString(KEY_NEWS_ID, it.id)
-//        val newsDetailFragment = NewsDetailFragment()
-//        newsDetailFragment.arguments = args
-//        activity?.supportFragmentManager?.beginTransaction()
-//            ?.addSharedElement(iv_main_image, getString(R.string.transaction_img_news))
-//            ?.replace(R.id.main_container, newsDetailFragment)
-//            ?.addToBackStack(null)
-//            ?.commit()
-//    }
+    private val sourceClickListener: (Source) -> Unit = {
+        val args = Bundle()
+        args.putString(KEY_SOURCE_ID, it.id)
+        val newsFragment = NewsFragment()
+        newsFragment.arguments = args
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.main_container, newsFragment)
+            ?.addToBackStack(null)
+            ?.commit()
+    }
 
 }
