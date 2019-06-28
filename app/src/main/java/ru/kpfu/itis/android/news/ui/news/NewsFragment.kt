@@ -78,7 +78,7 @@ class NewsFragment : Fragment() {
         newsViewModel?.isSuccessLiveData?.observe(this, Observer {
             makeToast(
                 if (it) {
-                    getString(R.string.server_load_success)
+                    getString(R.string.server_news_load_success)
                 } else {
                     getString(R.string.server_load_error)
                 }

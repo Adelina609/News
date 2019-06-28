@@ -5,7 +5,6 @@
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                                    xmlns:tools="http://schemas.android.com/tools">
 
-
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_news_fr_news"
             android:layout_width="0dp"

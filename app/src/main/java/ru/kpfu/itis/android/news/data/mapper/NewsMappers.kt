@@ -15,9 +15,10 @@ fun mapNewsDBToNews(newsDB: NewsDB): News = with(newsDB) {
 }
 
 fun mapNewsToNewsDB(news: News): NewsDB = with(news) {
-    NewsDB(0, source,author, title, description, url, urlToImage, publishedAt, content)
+    NewsDB(0, source, author, title, description, url, urlToImage, publishedAt, content)
 }
 
-fun mapCachedNewsToNewsDB(cachedNews: CachedNews) : NewsDB = with(cachedNews){
+fun mapCachedNewsToNewsDB(cachedNews: CachedNews): NewsDB = with(cachedNews) {
     NewsDB(0, source, author, title, description, "", urlToImage, publishedAt, "")
 }
+

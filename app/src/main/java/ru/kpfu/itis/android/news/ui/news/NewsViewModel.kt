@@ -28,7 +28,6 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel(), Lifecycle
                     isSuccessLiveData.value = true
                 },
                 onError = {
-                    println("---------------------------------" + it.message)
                     isSuccessLiveData.value = false
                 }
             )

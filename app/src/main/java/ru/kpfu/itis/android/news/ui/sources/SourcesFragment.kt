@@ -24,15 +24,9 @@ import kotlin.properties.Delegates
 
 class SourcesFragment : Fragment() {
 
-
-    private var sourcesListViewModel: SourceViewModel by Delegates.notNull()
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<SourceViewModel>
-
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_sources, container, false)
-    }
+    private var sourcesListViewModel: SourceViewModel by Delegates.notNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         DaggerNewsComponent.builder()
@@ -42,6 +36,10 @@ class SourcesFragment : Fragment() {
             .build()
             .inject(this)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_sources, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,7 +79,7 @@ class SourcesFragment : Fragment() {
         sourcesListViewModel.isSuccessLiveData.observe(this, Observer {
             makeToast(
                 if (it) {
-                    getString(R.string.server_load_success)
+                    getString(R.string.server_sources_load_success)
                 } else {
                     getString(R.string.server_load_error)
                 }

@@ -21,7 +21,6 @@ class DetailsViewModel(val newsRepository: NewsRepository) : ViewModel(), Lifecy
               desc : String, urlToImage : String, publishedAt : String){
         val cachedNews = CachedNews(Source(sourceId, sourceName), author, title, desc, urlToImage, publishedAt)
         newsRepository.cacheFavoriteNews(cachedNews)
-            //.observeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onComplete = {

@@ -22,13 +22,10 @@ import ru.kpfu.itis.android.news.utils.ViewModelFactory
 import javax.inject.Inject
 
 class FavoritesFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_news, container, false)
-    }
 
-    private var newsViewModel: FavoritesViewModel? = null
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<FavoritesViewModel>
+    private var newsViewModel: FavoritesViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         DaggerNewsComponent.builder()
@@ -38,6 +35,10 @@ class FavoritesFragment : Fragment() {
             .build()
             .inject(this)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_news, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,7 +59,6 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-
     private fun observeNewsDetailData() {
         newsViewModel?.newsLiveData?.observe(this, Observer {
             (rv_news_fr_news.adapter as NewsAdapter).submitList(it)
@@ -78,7 +78,7 @@ class FavoritesFragment : Fragment() {
         newsViewModel?.isSuccessLiveData?.observe(this, Observer {
             makeToast(
                 if (it) {
-                    getString(R.string.server_load_success)
+                    getString(R.string.server_news_load_success)
                 } else {
                     getString(R.string.server_load_error)
                 }

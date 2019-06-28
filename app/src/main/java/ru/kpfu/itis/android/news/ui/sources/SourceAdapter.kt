@@ -17,7 +17,6 @@ class SourceAdapter(
 ) :
     ListAdapter<Source, SourceAdapter.SourceHolder>(SourceDiffCallback()) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SourceAdapter.SourceHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_source, parent, false)
         return SourceHolder(view)
@@ -43,7 +42,6 @@ class SourceAdapter(
                 containerView.tv_source_desc.text = source.description
                 setOnClickListener { clickListener(source) }
             }
-            //Picasso.get().load(source.urlToImage).into(iv_main_image)
         }
     }
 }

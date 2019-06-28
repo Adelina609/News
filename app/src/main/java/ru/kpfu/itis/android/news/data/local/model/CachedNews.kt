@@ -6,7 +6,7 @@ import ru.kpfu.itis.android.news.data.network.model.Source
 class CachedNews(
     val source: Source?,
 
-    val author: String?,
+    val author: String,
 
     val title: String,
 
