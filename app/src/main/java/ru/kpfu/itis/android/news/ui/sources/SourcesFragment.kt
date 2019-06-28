@@ -29,9 +29,6 @@ class SourcesFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<SourceViewModel>
 
-    companion object {
-        const val KEY_SOURCE_ID = "id_source"
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_sources, container, false)
@@ -106,4 +103,7 @@ class SourcesFragment : Fragment() {
             ?.commit()
     }
 
+    companion object {
+        const val KEY_SOURCE_ID = "id_source"
+    }
 }

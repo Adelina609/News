@@ -1,6 +1,6 @@
-package ru.kpfu.itis.android.news.data.entity
+package ru.kpfu.itis.android.news.data.network.model
 
-class SourceBrief(
+class Source(
     val id: String?,
     val name: String
 ) {

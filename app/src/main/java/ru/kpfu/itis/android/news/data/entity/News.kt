@@ -1,9 +1,11 @@
 package ru.kpfu.itis.android.news.data.entity
 
+import ru.kpfu.itis.android.news.data.network.model.Source
+
 data class News(
     val id: Int,
 
-    val sourceBrief: SourceBrief,
+    val source: Source?,
 
     val author: String?,
 
@@ -19,14 +21,13 @@ data class News(
 
     val content: String?
 ) {
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
         other as News
 
-        if (sourceBrief != other.sourceBrief) return false
+        if (source != other.source) return false
         if (title != other.title) return false
         if (url != other.url) return false
 
@@ -34,8 +35,8 @@ data class News(
     }
 
     override fun hashCode(): Int {
-        var result = sourceBrief?.hashCode() ?: 0
-        result = 31 * result + (title?.hashCode() ?: 0)
+        var result = source?.hashCode() ?: 0
+        result = 31 * result + title.hashCode()
         result = 31 * result + (url?.hashCode() ?: 0)
         return result
     }

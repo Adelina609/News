@@ -1,23 +1,21 @@
 package ru.kpfu.itis.android.news.data.network.model
 
-import ru.kpfu.itis.android.news.data.entity.SourceBrief
-
 class NewsRemote (
-        val sourceBrief: SourceBrief,
+    val source: Source?,
 
-        val author: String?,
+    val author: String?,
 
-        val title: String,
+    val title: String,
 
-        val description: String,
+    val description: String,
 
-        val url: String?,
+    val url: String?,
 
-        val urlToImage: String?,
+    val urlToImage: String?,
 
-        val publishedAt: String?,
+    val publishedAt: String?,
 
-        val content: String?
+    val content: String?
     ) {
 
         override fun equals(other: Any?): Boolean {
@@ -26,7 +24,7 @@ class NewsRemote (
 
             other as NewsRemote
 
-            if (sourceBrief != other.sourceBrief) return false
+            if (source != other.source) return false
             if (title != other.title) return false
             if (url != other.url) return false
 
@@ -34,8 +32,8 @@ class NewsRemote (
         }
 
         override fun hashCode(): Int {
-            var result = sourceBrief.hashCode() ?: 0
-            result = 31 * result + (title.hashCode() ?: 0)
+            var result = source.hashCode()
+            result = 31 * result + title.hashCode()
             result = 31 * result + (url?.hashCode() ?: 0)
             return result
         }

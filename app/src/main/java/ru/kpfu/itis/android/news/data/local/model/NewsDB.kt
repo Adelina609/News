@@ -3,7 +3,7 @@ package ru.kpfu.itis.android.news.data.local.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.kpfu.itis.android.news.data.entity.SourceBrief
+import ru.kpfu.itis.android.news.data.network.model.Source
 
 @Entity(tableName = "news_data")
 data class NewsDB(
@@ -12,7 +12,7 @@ data class NewsDB(
     val id: Int,
 
     @ColumnInfo(name = "source")
-    val sourceBrief: SourceBrief,
+    val source: Source?,
 
     val author: String?,
 

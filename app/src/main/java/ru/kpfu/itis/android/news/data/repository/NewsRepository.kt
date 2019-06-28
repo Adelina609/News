@@ -4,6 +4,10 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import ru.kpfu.itis.android.news.data.entity.News
 import ru.kpfu.itis.android.news.data.entity.Source
+import ru.kpfu.itis.android.news.data.local.model.CachedNews
+import ru.kpfu.itis.android.news.data.local.model.NewsDB
+import ru.kpfu.itis.android.news.data.mapper.mapCachedNewsToNewsDB
+import ru.kpfu.itis.android.news.data.mapper.mapNewsToNewsDB
 
 class NewsRepository(
     private val newsNetworkRepository: NewsNetworkRepository,
@@ -18,8 +22,8 @@ class NewsRepository(
     fun getFavoriteNews(): Single<List<News>> =
         newsLocalRepository.getTopNews()
 
-    fun cacheFavoriteNews(newsList: List<News>): Completable =
-        newsLocalRepository.cacheTopNews(newsList)
+    fun cacheFavoriteNews(cachedNews: CachedNews): Completable =
+        newsLocalRepository.cacheTopNews(mapCachedNewsToNewsDB(cachedNews))
 
     //todo надо?
     fun getNewsById(id: Int): Single<News> = newsLocalRepository.findNewsById(id)

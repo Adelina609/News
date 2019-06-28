@@ -5,6 +5,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ru.kpfu.itis.android.news.data.entity.News
 import ru.kpfu.itis.android.news.data.local.dao.NewsDao
+import ru.kpfu.itis.android.news.data.local.model.NewsDB
 import ru.kpfu.itis.android.news.data.mapper.mapNewsDBToNews
 import ru.kpfu.itis.android.news.data.mapper.mapNewsToNewsDB
 
@@ -13,8 +14,8 @@ class NewsLocalRepository(private val newsDao: NewsDao) {
         .map { it.map { mapNewsDBToNews(it) } }
         .subscribeOn(Schedulers.io())
 
-    fun cacheTopNews(newsList: List<News>): Completable = Completable.fromAction {
-        newsDao.insertNewsList(newsList.map { mapNewsToNewsDB(it) })
+    fun cacheTopNews(news : NewsDB): Completable = Completable.fromAction {
+        newsDao.insertNewsList(news)
     }.subscribeOn(Schedulers.io())
 
     fun deleteTopNews(): Completable = Completable.fromAction {

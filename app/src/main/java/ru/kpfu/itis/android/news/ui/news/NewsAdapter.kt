@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_news.view.*
+import kotlinx.android.synthetic.main.item_source.view.*
 import ru.kpfu.itis.android.news.R
 import ru.kpfu.itis.android.news.data.entity.News
+import ru.kpfu.itis.android.news.data.entity.Source
 
-class NewsAdapter(private val news: List<News>) :
+class NewsAdapter(private val sourceLambda: (News) -> Unit) :
     ListAdapter<News, NewsAdapter.NewsHolder>(NewsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsAdapter.NewsHolder {
@@ -20,7 +22,7 @@ class NewsAdapter(private val news: List<News>) :
     }
 
     override fun onBindViewHolder(holder: NewsAdapter.NewsHolder, position: Int) {
-        holder.bind(news[position].title, news[position].description)
+        holder.bind(getItem(position), sourceLambda)
     }
 
     class NewsDiffCallback : DiffUtil.ItemCallback<News>() {
@@ -33,9 +35,13 @@ class NewsAdapter(private val news: List<News>) :
     class NewsHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
 
-        fun bind(newsName: String, newsDesc: String) {
-            containerView.tv_title_item_news.text = newsName
-            containerView.tv_desc_item_news.text = newsDesc
+        fun bind(news: News, clickListener: (News) -> Unit) {
+            with(containerView) {
+                containerView.tv_title_item_news.text = news.title
+                containerView.tv_desc_item_news.text = news.description
+                setOnClickListener { clickListener(news) }
+            }
+            //Picasso.get().load(source.urlToImage).into(iv_main_image)
         }
     }
 }

@@ -10,7 +10,7 @@ import io.reactivex.Single
 @Dao
 interface NewsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewsList(news: List<NewsDB>)
+    fun insertNewsList(news: NewsDB)
 
     @Query("SELECT * FROM news_data")
     fun getNewsList(): Single<List<NewsDB>>
