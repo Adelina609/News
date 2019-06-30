@@ -14,7 +14,6 @@ import ru.kpfu.itis.android.news.data.repository.NewsRepository
 
 class DetailsViewModel(val newsRepository: NewsRepository) : ViewModel(), LifecycleObserver {
     private var disposable: Disposable? = null
-    val newsLiveData = MutableLiveData<News>()
     var isSuccessLiveData = MutableLiveData<Boolean>()
 
     fun cache(sourceId: String, sourceName : String,  author : String,  title : String,
@@ -26,14 +25,9 @@ class DetailsViewModel(val newsRepository: NewsRepository) : ViewModel(), Lifecy
                 onComplete = {
                     isSuccessLiveData.value = true},
                 onError = {
-                    println("---------------------------------" + it.message)
                     isSuccessLiveData.value = false
                 }
             )
-    }
-    fun getNews(news: News) {
-        newsLiveData.value = news
-        isSuccessLiveData.value = true
     }
 
     override fun onCleared() {

@@ -16,12 +16,12 @@ import ru.kpfu.itis.android.news.data.entity.Source
 class NewsAdapter(private val sourceLambda: (News) -> Unit) :
     ListAdapter<News, NewsAdapter.NewsHolder>(NewsDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsAdapter.NewsHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
         return NewsHolder(view)
     }
 
-    override fun onBindViewHolder(holder: NewsAdapter.NewsHolder, position: Int) {
+    override fun onBindViewHolder(holder: NewsHolder, position: Int) {
         holder.bind(getItem(position), sourceLambda)
     }
 

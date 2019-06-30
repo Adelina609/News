@@ -17,12 +17,12 @@ class SourceAdapter(
 ) :
     ListAdapter<Source, SourceAdapter.SourceHolder>(SourceDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SourceAdapter.SourceHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SourceHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_source, parent, false)
         return SourceHolder(view)
     }
 
-    override fun onBindViewHolder(holder: SourceAdapter.SourceHolder, position: Int) {
+    override fun onBindViewHolder(holder: SourceHolder, position: Int) {
         holder.bind(getItem(position), sourceLambda)
     }
 
