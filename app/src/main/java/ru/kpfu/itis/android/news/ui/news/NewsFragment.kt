@@ -15,29 +15,30 @@ import kotlinx.android.synthetic.main.fragment_news.*
 import ru.kpfu.itis.android.news.App
 import ru.kpfu.itis.android.news.R
 import ru.kpfu.itis.android.news.data.entity.News
-import ru.kpfu.itis.android.news.di.screens.component.DaggerNewsComponent
-import ru.kpfu.itis.android.news.di.screens.module.NewsModule
-import ru.kpfu.itis.android.news.di.screens.module.ViewModelModule
 import ru.kpfu.itis.android.news.utils.ViewModelFactory
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class NewsFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_news, container, false)
-    }
 
-    private var newsViewModel: NewsViewModel? = null
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<NewsViewModel>
+    private var newsViewModel: NewsViewModel by Delegates.notNull()
+    lateinit var app: App
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        DaggerNewsComponent.builder()
-            .appComponent(App.getAppComponents())
-            .newsModule(NewsModule())
-            .viewModelModule(ViewModelModule())
-            .build()
-            .inject(this)
         super.onCreate(savedInstanceState)
+        app = App()
+        app.plusNewsSComponent().inject(this)
+    }
+
+    override fun onDestroy() {
+        app.clearNewsSComponent()
+        super.onDestroy()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_news, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +47,7 @@ class NewsFragment : Fragment() {
         newsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NewsViewModel::class.java)
         arguments?.let {
             val passedArguments = NewsFragmentArgs.fromBundle(it)
-            newsViewModel?.getNewsList(passedArguments.keysourceid)
+            newsViewModel.getNewsList(passedArguments.keysourceid)
         }
         observeNewsDetailData()
         observeInProgress()
@@ -61,15 +62,14 @@ class NewsFragment : Fragment() {
         }
     }
 
-
     private fun observeNewsDetailData() {
-        newsViewModel?.newsLiveData?.observe(this, Observer {
+        newsViewModel.newsLiveData.observe(this, Observer {
             (rv_news_fr_news.adapter as NewsAdapter).submitList(it)
         })
     }
 
     private fun observeInProgress() {
-        newsViewModel?.inProgressLiveData?.observe(this, Observer {
+        newsViewModel.inProgressLiveData.observe(this, Observer {
             it?.let {
                 progressBar_fr_news.visibility =
                     if (it) View.VISIBLE else View.GONE
@@ -78,7 +78,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun observeIsSuccess() {
-        newsViewModel?.isSuccessLiveData?.observe(this, Observer {
+        newsViewModel.isSuccessLiveData.observe(this, Observer {
             makeToast(
                 if (it) {
                     getString(R.string.server_news_load_success)

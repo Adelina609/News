@@ -15,26 +15,26 @@ import kotlinx.android.synthetic.main.fragment_news_favorite.*
 import ru.kpfu.itis.android.news.App
 import ru.kpfu.itis.android.news.R
 import ru.kpfu.itis.android.news.data.entity.News
-import ru.kpfu.itis.android.news.di.screens.component.DaggerNewsComponent
-import ru.kpfu.itis.android.news.di.screens.module.NewsModule
-import ru.kpfu.itis.android.news.di.screens.module.ViewModelModule
 import ru.kpfu.itis.android.news.utils.ViewModelFactory
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class FavoritesFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<FavoritesViewModel>
-    private var newsViewModel: FavoritesViewModel? = null
+    private var newsViewModel: FavoritesViewModel by Delegates.notNull()
+    lateinit var app: App
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        DaggerNewsComponent.builder()
-            .appComponent(App.getAppComponents())
-            .newsModule(NewsModule())
-            .viewModelModule(ViewModelModule())
-            .build()
-            .inject(this)
         super.onCreate(savedInstanceState)
+        app = App()
+        app.plusFavoritesSComponent().inject(this)
+    }
+
+    override fun onDestroy() {
+        app.clearFavoritesSComponent()
+        super.onDestroy()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,7 +45,7 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         newsViewModel = ViewModelProviders.of(this, viewModelFactory).get(FavoritesViewModel::class.java)
-        newsViewModel?.getNewsList()
+        newsViewModel.getNewsList()
         observeNewsDetailData()
         observeInProgress()
         observeIsSuccess()
@@ -60,13 +60,13 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun observeNewsDetailData() {
-        newsViewModel?.newsLiveData?.observe(this, Observer {
+        newsViewModel.newsLiveData.observe(this, Observer {
             (rv_news_fr_favorite.adapter as NewsAdapter).submitList(it)
         })
     }
 
     private fun observeInProgress() {
-        newsViewModel?.inProgressLiveData?.observe(this, Observer {
+        newsViewModel.inProgressLiveData.observe(this, Observer {
             it?.let {
                 progressBar_fr_favorite.visibility =
                     if (it) View.VISIBLE else View.GONE
@@ -75,7 +75,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun observeIsSuccess() {
-        newsViewModel?.isSuccessLiveData?.observe(this, Observer {
+        newsViewModel.isSuccessLiveData.observe(this, Observer {
             makeToast(
                 if (it) {
                     getString(R.string.server_news_load_success)

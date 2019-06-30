@@ -1,6 +1,5 @@
-package ru.kpfu.itis.android.news.di.screens.module
+package ru.kpfu.itis.android.news.di.application.module
 
-import ru.kpfu.itis.android.news.di.screens.scope.NewsScope
 import dagger.Module
 import dagger.Provides
 import ru.kpfu.itis.android.news.data.local.dao.NewsDao
@@ -8,25 +7,22 @@ import ru.kpfu.itis.android.news.data.network.NewsApi
 import ru.kpfu.itis.android.news.data.repository.NewsLocalRepository
 import ru.kpfu.itis.android.news.data.repository.NewsNetworkRepository
 import ru.kpfu.itis.android.news.data.repository.NewsRepository
+import ru.kpfu.itis.android.news.di.application.scope.ApplicationScope
 
 @Module
 class NewsModule {
     @Provides
-    @NewsScope
+    @ApplicationScope
     fun provideNewsRepository(
         newsLocalRepository: NewsLocalRepository,
         newsNetworkRepository: NewsNetworkRepository
     ): NewsRepository = NewsRepository(newsNetworkRepository, newsLocalRepository)
 
     @Provides
-    @NewsScope
+    @ApplicationScope
     fun provideNewsNetworkRepository(newsApi: NewsApi): NewsNetworkRepository = NewsNetworkRepository(newsApi)
 
     @Provides
-    @NewsScope
+    @ApplicationScope
     fun provideNewsLocalRepository(newsDao: NewsDao): NewsLocalRepository = NewsLocalRepository(newsDao)
-
-//    @Provides
-//    @NewsScope
-//    fun provideNewsInteractor(newsRepository: NewsRepository): TopNewsInteractor = TopNewsInteractor(newsRepository)
 }
