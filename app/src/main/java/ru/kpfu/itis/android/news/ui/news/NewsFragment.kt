@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_news.*
@@ -17,7 +18,6 @@ import ru.kpfu.itis.android.news.data.entity.News
 import ru.kpfu.itis.android.news.di.screens.component.DaggerNewsComponent
 import ru.kpfu.itis.android.news.di.screens.module.NewsModule
 import ru.kpfu.itis.android.news.di.screens.module.ViewModelModule
-import ru.kpfu.itis.android.news.ui.details.DetailsFragment
 import ru.kpfu.itis.android.news.utils.ViewModelFactory
 import javax.inject.Inject
 
@@ -44,7 +44,10 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         newsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NewsViewModel::class.java)
-        newsViewModel?.getNewsList(arguments?.get(KEY_SOURCE_ID) as String)
+        arguments?.let {
+            val passedArguments = NewsFragmentArgs.fromBundle(it)
+            newsViewModel?.getNewsList(passedArguments.keysourceid)
+        }
         observeNewsDetailData()
         observeInProgress()
         observeIsSuccess()
@@ -87,33 +90,18 @@ class NewsFragment : Fragment() {
     }
 
     private val newsClickListener: (News) -> Unit = {
-        val args = Bundle()
-        args.putString(KEY_NEWS_IMAGE, it.urlToImage)
-        args.putString(KEY_NEWS_SOURCE, it.source?.name)
-        args.putString(KEY_SOURCE_ID, it.source?.id)
-        args.putString(KEY_NEWS_AUTHOR, it.author)
-        args.putString(KEY_NEWS_TITLE, it.title)
-        args.putString(KEY_NEWS_DESC, it.description)
-        args.putString(KEY_NEWS_DATE, it.publishedAt)
-        val detailsFragment = DetailsFragment()
-        detailsFragment.arguments = args
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.main_container, detailsFragment)
-            ?.addToBackStack(null)
-            ?.commit()
+        val action = NewsFragmentDirections.actionNewsFragmentToDetailsFragment()
+        action.keysourceid = it.source?.id ?: ""
+        action.keynewsauthor = it.author ?: ""
+        action.keynewsdate = it.publishedAt ?: ""
+        action.keynewsdesc = it.description
+        action.keynewsimage = it.urlToImage ?: ""
+        action.keynewssource = it.source?.name ?: ""
+        action.keynewstitle = it.title
+        val navController = view?.findNavController()
+        navController?.navigate(action)
     }
 
     private fun makeToast(text: String) =
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
-
-    companion object {
-        const val KEY_SOURCE_ID = "id_source"
-        const val KEY_NEWS_IMAGE = "news_image"
-        const val KEY_NEWS_SOURCE = "news_source"
-        const val KEY_NEWS_AUTHOR = "news_author"
-        const val KEY_NEWS_TITLE = "news_title"
-        const val KEY_NEWS_DESC = "news_desc"
-        const val KEY_NEWS_DATE = "news_date"
-
-    }
 }

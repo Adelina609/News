@@ -2,9 +2,7 @@ package ru.kpfu.itis.android.news.ui.details
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_news_by_source.*
@@ -21,13 +19,14 @@ class DetailsFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<DetailsViewModel>
     private var detailsViewModel: DetailsViewModel? = null
-    lateinit var sourceId :String
-    lateinit var sourceName :String
-    lateinit var title :String
-    lateinit var author :String
-    lateinit var urlToImage :String
-    lateinit var desc :String
-    lateinit var date :String
+
+    private lateinit var sourceId: String
+    private lateinit var sourceName: String
+    private lateinit var title: String
+    private lateinit var author: String
+    private lateinit var urlToImage: String
+    private lateinit var desc: String
+    private lateinit var date: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         DaggerNewsComponent.builder()
@@ -38,13 +37,16 @@ class DetailsFragment : Fragment() {
             .inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        sourceId = arguments?.get(KEY_SOURCE_ID) as String
-        sourceName = arguments?.get(KEY_NEWS_SOURCE) as String
-        title = arguments?.get(KEY_NEWS_TITLE) as String
-        author = arguments?.get(KEY_NEWS_AUTHOR) as String
-        urlToImage = arguments?.get(KEY_NEWS_IMAGE) as String
-        desc = arguments?.get(KEY_NEWS_DESC) as String
-        date = arguments?.get(KEY_NEWS_DATE) as String
+        arguments?.let {
+            val passedArguments = DetailsFragmentArgs.fromBundle(it)
+            sourceId = passedArguments.keysourceid
+            sourceName = passedArguments.keynewssource
+            title = passedArguments.keynewstitle
+            author = passedArguments.keynewsauthor
+            urlToImage = passedArguments.keynewsimage
+            desc = passedArguments.keynewsdesc
+            date = passedArguments.keynewsdate
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -70,23 +72,12 @@ class DetailsFragment : Fragment() {
 
     private fun setUpViews() {
         Picasso.get()
-            .load(arguments?.get(KEY_NEWS_IMAGE) as String?)
+            .load(urlToImage)
             .into(iv_news_image)
         tv_title_fr_news.text = title
         tv_source_fr_news.text = sourceName
         tv_desc_fr_news.text = desc
         tv_author.text = author
         tv_date.text = date
-    }
-
-    companion object {
-        const val KEY_SOURCE_ID = "id_source"
-        const val KEY_NEWS_IMAGE = "news_image"
-        const val KEY_NEWS_SOURCE = "news_source"
-        const val KEY_NEWS_AUTHOR = "news_author"
-        const val KEY_NEWS_TITLE = "news_title"
-        const val KEY_NEWS_DESC = "news_desc"
-        const val KEY_NEWS_DATE = "news_date"
-
     }
 }
