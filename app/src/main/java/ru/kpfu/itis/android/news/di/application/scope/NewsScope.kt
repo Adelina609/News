@@ -1,4 +1,4 @@
-package ru.kpfu.itis.android.news.di.screens.scope
+package ru.kpfu.itis.android.news.di.application.scope
 
 import javax.inject.Scope
 

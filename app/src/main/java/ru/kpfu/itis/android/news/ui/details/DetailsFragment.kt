@@ -3,22 +3,16 @@ package ru.kpfu.itis.android.news.ui.details
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_news_by_source.*
 import ru.kpfu.itis.android.news.App
 import ru.kpfu.itis.android.news.R
-import ru.kpfu.itis.android.news.di.screens.component.DaggerNewsComponent
-import ru.kpfu.itis.android.news.di.screens.module.NewsModule
-import ru.kpfu.itis.android.news.di.screens.module.ViewModelModule
-import ru.kpfu.itis.android.news.utils.ViewModelFactory
-import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class DetailsFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory<DetailsViewModel>
-    private var detailsViewModel: DetailsViewModel? = null
+    private var detailsViewModel: DetailsViewModel by Delegates.notNull()
+    lateinit var app: App
 
     private lateinit var sourceId: String
     private lateinit var sourceName: String
@@ -29,12 +23,6 @@ class DetailsFragment : Fragment() {
     private lateinit var date: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        DaggerNewsComponent.builder()
-            .appComponent(App.getAppComponents())
-            .newsModule(NewsModule())
-            .viewModelModule(ViewModelModule())
-            .build()
-            .inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         arguments?.let {
@@ -47,6 +35,13 @@ class DetailsFragment : Fragment() {
             desc = passedArguments.keynewsdesc
             date = passedArguments.keynewsdate
         }
+        app = App()
+        app.plusDetailsSComponent().inject(this)
+    }
+
+    override fun onDestroy() {
+        app.clearDetailsSComponent()
+        super.onDestroy()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,14 +54,13 @@ class DetailsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_cache -> detailsViewModel?.cache(sourceId, sourceName, author, title, desc, urlToImage, date)
+            R.id.action_cache -> detailsViewModel.cache(sourceId, sourceName, author, title, desc, urlToImage, date)
         }
         return true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        detailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
         setUpViews()
     }
 

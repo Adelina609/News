@@ -15,27 +15,26 @@ import kotlinx.android.synthetic.main.fragment_sources.*
 import ru.kpfu.itis.android.news.App
 import ru.kpfu.itis.android.news.R
 import ru.kpfu.itis.android.news.data.entity.Source
-import ru.kpfu.itis.android.news.di.screens.component.DaggerNewsComponent
-import ru.kpfu.itis.android.news.di.screens.module.NewsModule
-import ru.kpfu.itis.android.news.di.screens.module.ViewModelModule
 import ru.kpfu.itis.android.news.utils.ViewModelFactory
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class SourcesFragment : Fragment() {
 
+class SourcesFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory<SourceViewModel>
     private var sourcesListViewModel: SourceViewModel by Delegates.notNull()
+    lateinit var app: App
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        DaggerNewsComponent.builder()
-            .appComponent(App.getAppComponents())
-            .newsModule(NewsModule())
-            .viewModelModule(ViewModelModule())
-            .build()
-            .inject(this)
         super.onCreate(savedInstanceState)
+        app = App()
+        app.plusSourcesSComponent().inject(this)
+    }
+
+    override fun onDestroy() {
+        app.clearSourcesSComponent()
+        super.onDestroy()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
